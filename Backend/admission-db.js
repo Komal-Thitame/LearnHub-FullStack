@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const multer = require("multer");
@@ -107,4 +107,81 @@ app.delete("/api/admission/:id", (req, res) => {
 // Server Listen
 app.listen(5000, () => {
   console.log("🚀 Server running on http://localhost:5000");
+});*/
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+const db = require("./dbcon");
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+// 1. Get Courses for Dropdown
+router.get("/get-courses", (req, res) => {
+  const sql = "SELECT Id, title FROM `view-courses` ORDER BY title ASC";
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(result);
+  });
 });
+
+// 2. Get All Admissions (Table Display ke liye)
+router.get("/api/admissions", (req, res) => {
+  const sql = "SELECT a.*, c.title AS courseName FROM admissions a LEFT JOIN `view-courses` c ON a.course = c.Id ORDER BY a.id DESC";
+  db.query(sql, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    const formattedData = result.map(row => {
+      if (row.photo) row.photo = `data:image/jpeg;base64,${row.photo.toString('base64')}`;
+      if (row.dob) row.dob = new Date(row.dob).toISOString().split('T')[0];
+      return row;
+    });
+    res.json(formattedData);
+  });
+});
+
+// 3. Register New Student (POST)
+router.post("/api/admission", upload.single("photo"), (req, res) => {
+  const { name, course, email, phone, address, status, gender, dob, city } = req.body;
+  const photo = req.file ? req.file.buffer : null;
+  const date = new Date().toISOString().split('T')[0]; // Current Date
+
+  const sql = "INSERT INTO admissions (name, course, email, phone, address, status, gender, dob, city, date, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const params = [name, course, email, phone, address, status || 'Active', gender, dob, city, date, photo];
+
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      console.error("Insert Error:", err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+    res.json({ success: true, message: "Registered Successfully", id: result.insertId });
+  });
+});
+
+// 4. Update Student
+router.put("/api/admission/:id", upload.single("photo"), (req, res) => {
+  const { name, course, email, phone, address, status, gender, dob, city } = req.body;
+  const id = req.params.id;
+  
+  let sql, params;
+  if (req.file) {
+    sql = "UPDATE admissions SET name=?, course=?, email=?, phone=?, address=?, status=?, gender=?, dob=?, city=?, photo=? WHERE id=?";
+    params = [name, course, email, phone, address, status, gender, dob, city, req.file.buffer, id];
+  } else {
+    sql = "UPDATE admissions SET name=?, course=?, email=?, phone=?, address=?, status=?, gender=?, dob=?, city=? WHERE id=?";
+    params = [name, course, email, phone, address, status, gender, dob, city, id];
+  }
+
+  db.query(sql, params, (err) => {
+    if (err) return res.status(500).json({ success: false, error: err.message });
+    res.json({ success: true });
+  });
+});
+
+// 5. Delete Student
+router.delete("/api/admission/:id", (req, res) => {
+  db.query("DELETE FROM admissions WHERE id = ?", [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ success: true });
+  });
+});
+
+module.exports = router;

@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -92,4 +92,53 @@ app.delete("/api/instructors/:id", (req, res) => {
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});*/
+
+const express = require("express");
+const router = express.Router();
+const db = require("./dbcon"); // Database connection import
+
+// 1. GET: Sabhi instructors ki list fetch karein
+router.get("/api/instructors", (req, res) => {
+    const sql = "SELECT * FROM instructors ORDER BY id DESC";
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json(result);
+    });
 });
+
+// 2. POST: Naya instructor add karein
+router.post("/api/instructors", (req, res) => {
+    const { name, email, subject, tasks, performance, status } = req.body;
+    const sql = "INSERT INTO instructors (name, email, subject, tasks, performance, status) VALUES (?, ?, ?, ?, ?, ?)";
+    
+    db.query(sql, [name, email, subject, tasks, performance, status], (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json({ success: true, message: "Instructor added!", id: result.insertId });
+    });
+});
+
+// 3. PUT: Instructor edit karein
+router.put("/api/instructors/:id", (req, res) => {
+    const { name, email, subject, tasks, performance, status } = req.body;
+    const { id } = req.params;
+    const sql = "UPDATE instructors SET name=?, email=?, subject=?, tasks=?, performance=?, status=? WHERE id=?";
+    
+    db.query(sql, [name, email, subject, tasks, performance, status, id], (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json({ success: true, message: "Instructor updated successfully!" });
+    });
+});
+
+// 4. DELETE: Instructor remove karein
+router.delete("/api/instructors/:id", (req, res) => {
+    const { id } = req.params;
+    const sql = "DELETE FROM instructors WHERE id = ?";
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json({ success: true, message: "Instructor deleted!" });
+    });
+});
+
+module.exports = router;

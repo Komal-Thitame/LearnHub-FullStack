@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -107,4 +107,68 @@ app.put("/api/payments/:id", (req, res) => {
 
 app.listen(5000, () => {
     console.log("Server running on port 5000");
+});*/
+
+const express = require("express");
+const router = express.Router();
+const db = require("./dbcon"); // Apni connection file ko bulayein
+
+// 1. GET: Saare payments fetch karna (Student Name ke saath)
+router.get("/api/payments", (req, res) => {
+    const sql = `
+        SELECT p.*, a.name AS student_name 
+        FROM payments p 
+        JOIN admissions a ON p.student_id = a.id 
+        ORDER BY p.payment_date DESC
+    `;
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.json(result);
+    });
 });
+
+// 2. GET: Admissions fetch karna (Dropdown ke liye)
+router.get("/api/admissions-list", (req, res) => {
+    const sql = "SELECT id, name, course FROM admissions";
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json(result);
+    });
+});
+
+// 3. POST: Naya payment record karna
+router.post("/api/payments", (req, res) => {
+    const { student_id, amount, method, status } = req.body;
+    const payment_id = `PAY-${Math.floor(1000 + Math.random() * 9000)}`;
+    const date = new Date().toISOString().split('T')[0];
+
+    const sql = "INSERT INTO payments (payment_id, student_id, amount, method, status, payment_date) VALUES (?, ?, ?, ?, ?, ?)";
+    
+    db.query(sql, [payment_id, student_id, amount, method, status, date], (err, result) => {
+        if (err) return res.status(500).json({ error: "Database error" });
+        res.json({ success: true, message: "Payment added successfully", id: payment_id });
+    });
+});
+
+// 4. DELETE: Payment record delete karna
+router.delete("/api/payments/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = "DELETE FROM payments WHERE payment_id = ?";
+    db.query(sql, [id], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.json({ message: "Payment deleted successfully" });
+    });
+});
+
+// 5. UPDATE: Payment status update karna
+router.put("/api/payments/:id", (req, res) => {
+    const id = req.params.id;
+    const { status } = req.body;
+    const sql = "UPDATE payments SET status = ? WHERE payment_id = ?";
+    db.query(sql, [status, id], (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.json({ message: "Status updated" });
+    });
+});
+
+module.exports = router;
