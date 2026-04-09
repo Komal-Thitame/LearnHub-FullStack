@@ -1,124 +1,14 @@
-/*const express = require("express");
-const mysql = require("mysql");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-// 1. Database Connection
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "", 
-    database: "admin-dashbord" // Aapka DB Name
-});
-
-db.connect((err) => {
-    if (err) {
-        console.error("Database connection failed: " + err.stack);
-        return;
-    }
-    console.log("Connected to MySQL Database");
-
-    // 2. Relationship Table Create logic
-    const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS payments (
-            payment_id VARCHAR(20) PRIMARY KEY,
-            student_id INT,
-            amount DECIMAL(10, 2) NOT NULL,
-            method ENUM('UPI', 'Card', 'Cash') DEFAULT 'UPI',
-            status ENUM('Paid', 'Pending') DEFAULT 'Paid',
-            payment_date DATE,
-            FOREIGN KEY (student_id) REFERENCES admissions(id) ON DELETE CASCADE
-        )
-    `;
-    db.query(createTableQuery, (err) => {
-        if (err) console.log("Table creation error:", err);
-    });
-});
-
-// --- API ROUTES ---
-
-// 3. GET: Saare payments fetch karna (Student Name ke saath)
-app.get("/api/payments", (req, res) => {
-    const sql = `
-        SELECT p.*, a.name AS student_name 
-        FROM payments p 
-        JOIN admissions a ON p.student_id = a.id 
-        ORDER BY p.payment_date DESC
-    `;
-    db.query(sql, (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.json(result);
-    });
-});
-
-// 4. GET: Admissions table se students fetch karna (Dropdown FIX)
-app.get("/api/admissions", (req, res) => {
-    const sql = "SELECT id, name, course FROM admissions";
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error("Fetch Admissions Error:", err);
-            return res.status(500).json(err);
-        }
-        res.json(result);
-    });
-});
-
-// 5. POST: Naya payment record karna
-app.post("/api/payments", (req, res) => {
-    const { student_id, amount, method, status } = req.body;
-    const payment_id = `PAY-${Math.floor(1000 + Math.random() * 9000)}`;
-    const date = new Date().toISOString().split('T')[0];
-
-    const sql = "INSERT INTO payments (payment_id, student_id, amount, method, status, payment_date) VALUES (?, ?, ?, ?, ?, ?)";
-    
-    db.query(sql, [payment_id, student_id, amount, method, status, date], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Database error" });
-        }
-        res.json({ message: "Payment added successfully", id: payment_id });
-    });
-});
-
-// 6. DELETE: Payment record delete karna
-app.delete("/api/payments/:id", (req, res) => {
-    const id = req.params.id;
-    const sql = "DELETE FROM payments WHERE payment_id = ?";
-    db.query(sql, [id], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.json({ message: "Payment deleted successfully" });
-    });
-});
-
-// 7. UPDATE: Payment status update karna
-app.put("/api/payments/:id", (req, res) => {
-    const id = req.params.id;
-    const { status } = req.body;
-    const sql = "UPDATE payments SET status = ? WHERE payment_id = ?";
-    db.query(sql, [status, id], (err, result) => {
-        if (err) return res.status(500).send(err);
-        res.json({ message: "Status updated" });
-    });
-});
-
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
-});*/
-
 const express = require("express");
 const router = express.Router();
-const db = require("./dbcon"); // Apni connection file ko bulayein
+const db = require("./dbcon"); 
 
-// 1. GET: Saare payments fetch karna (Student Name ke saath)
+// 1. GET: Saare payments fetch karna
 router.get("/api/payments", (req, res) => {
     const sql = `
-        SELECT p.*, a.name AS student_name 
+        SELECT p.*, a.name AS student_name, c.title AS course_name, c.price AS course_price
         FROM payments p 
         JOIN admissions a ON p.student_id = a.id 
+        JOIN \`view-courses\` c ON a.course = c.Id
         ORDER BY p.payment_date DESC
     `;
     db.query(sql, (err, result) => {
@@ -127,8 +17,8 @@ router.get("/api/payments", (req, res) => {
     });
 });
 
-// 2. GET: Admissions fetch karna (Dropdown ke liye)
-router.get("/api/admissions-list", (req, res) => {
+// 2. GET: Admissions list (Dropdown ke liye)
+router.get("/api/admissions", (req, res) => {
     const sql = "SELECT id, name, course FROM admissions";
     db.query(sql, (err, result) => {
         if (err) return res.status(500).json(err);
@@ -136,7 +26,7 @@ router.get("/api/admissions-list", (req, res) => {
     });
 });
 
-// 3. POST: Naya payment record karna
+// 3. POST: Naya payment add karna (With Auto-Notification)
 router.post("/api/payments", (req, res) => {
     const { student_id, amount, method, status } = req.body;
     const payment_id = `PAY-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -146,28 +36,46 @@ router.post("/api/payments", (req, res) => {
     
     db.query(sql, [payment_id, student_id, amount, method, status, date], (err, result) => {
         if (err) return res.status(500).json({ error: "Database error" });
-        res.json({ success: true, message: "Payment added successfully", id: payment_id });
+
+        // --- STEP: Student ka naam fetch karo notification ke liye ---
+        db.query("SELECT name FROM admissions WHERE id = ?", [student_id], (errName, studentResult) => {
+            const studentName = studentResult.length > 0 ? studentResult[0].name : "Unknown Student";
+
+            // --- STEP: Notification table mein entry dalo ---
+            const sqlNotif = "INSERT INTO notifications (`title`, `desc`, `type`, `color`) VALUES (?, ?, ?, ?)";
+            const notifValues = [
+                "Payment Received", 
+                `A payment of ₹${amount} was received from ${studentName}.`, 
+                "payment", 
+                "#05CD99" // Green Color
+            ];
+
+            db.query(sqlNotif, notifValues, (errNotif) => {
+                if (errNotif) console.error("Payment Notification Error:", errNotif);
+                
+                // Final Response
+                res.json({ success: true, message: "Payment added & Notification sent", id: payment_id });
+            });
+        });
     });
 });
 
-// 4. DELETE: Payment record delete karna
+// 4. DELETE: Payment delete karna
 router.delete("/api/payments/:id", (req, res) => {
-    const id = req.params.id;
     const sql = "DELETE FROM payments WHERE payment_id = ?";
-    db.query(sql, [id], (err, result) => {
+    db.query(sql, [req.params.id], (err, result) => {
         if (err) return res.status(500).send(err);
-        res.json({ message: "Payment deleted successfully" });
+        res.json({ message: "Deleted successfully" });
     });
 });
 
-// 5. UPDATE: Payment status update karna
+// 5. UPDATE: Payment update karna
 router.put("/api/payments/:id", (req, res) => {
-    const id = req.params.id;
-    const { status } = req.body;
-    const sql = "UPDATE payments SET status = ? WHERE payment_id = ?";
-    db.query(sql, [status, id], (err, result) => {
+    const { status, amount, method } = req.body;
+    const sql = "UPDATE payments SET status = ?, amount = ?, method = ? WHERE payment_id = ?";
+    db.query(sql, [status, amount, method, req.params.id], (err, result) => {
         if (err) return res.status(500).send(err);
-        res.json({ message: "Status updated" });
+        res.json({ message: "Updated successfully" });
     });
 });
 

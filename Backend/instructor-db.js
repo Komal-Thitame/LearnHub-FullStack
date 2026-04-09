@@ -93,51 +93,81 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });*/
-
 const express = require("express");
 const router = express.Router();
-const db = require("./dbcon"); // Database connection import
+const db = require("./dbcon"); 
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
-// 1. GET: Sabhi instructors ki list fetch karein
+// Folder creation logic
+const uploadDir = path.join(__dirname, "uploads/faculty/");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Multer Storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => { cb(null, uploadDir); },
+    filename: (req, file, cb) => {
+        cb(null, "faculty-" + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
+
+// GET ALL
 router.get("/api/instructors", (req, res) => {
-    const sql = "SELECT * FROM instructors ORDER BY id DESC";
-    db.query(sql, (err, result) => {
+    db.query("SELECT * FROM instructors ORDER BY id DESC", (err, result) => {
         if (err) return res.status(500).json(err);
         res.json(result);
     });
 });
 
-// 2. POST: Naya instructor add karein
-router.post("/api/instructors", (req, res) => {
+// POST (Add New)
+router.post("/api/instructors", upload.single("photo"), (req, res) => {
     const { name, email, subject, tasks, performance, status } = req.body;
-    const sql = "INSERT INTO instructors (name, email, subject, tasks, performance, status) VALUES (?, ?, ?, ?, ?, ?)";
-    
-    db.query(sql, [name, email, subject, tasks, performance, status], (err, result) => {
-        if (err) return res.status(500).json(err);
-        res.json({ success: true, message: "Instructor added!", id: result.insertId });
+    const photo_url = req.file ? `http://localhost:5000/uploads/faculty/${req.file.filename}` : null;
+
+    const sql = "INSERT INTO instructors (name, email, subject, tasks, performance, status, photo_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const params = [name, email, subject, tasks || 0, performance || '80%', status, photo_url];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.error("SQL Error:", err);
+            return res.status(500).json({ error: err.sqlMessage });
+        }
+        res.json({ success: true });
     });
 });
 
-// 3. PUT: Instructor edit karein
-router.put("/api/instructors/:id", (req, res) => {
+// PUT (Update)
+router.put("/api/instructors/:id", upload.single("photo"), (req, res) => {
     const { name, email, subject, tasks, performance, status } = req.body;
     const { id } = req.params;
-    const sql = "UPDATE instructors SET name=?, email=?, subject=?, tasks=?, performance=?, status=? WHERE id=?";
-    
-    db.query(sql, [name, email, subject, tasks, performance, status, id], (err, result) => {
-        if (err) return res.status(500).json(err);
-        res.json({ success: true, message: "Instructor updated successfully!" });
+
+    let sql = "UPDATE instructors SET name=?, email=?, subject=?, tasks=?, performance=?, status=? WHERE id=?";
+    let params = [name, email, subject, tasks || 0, performance || '80%', status, id];
+
+    if (req.file) {
+        const photo_url = `http://localhost:5000/uploads/faculty/${req.file.filename}`;
+        sql = "UPDATE instructors SET name=?, email=?, subject=?, tasks=?, performance=?, status=?, photo_url=? WHERE id=?";
+        params = [name, email, subject, tasks || 0, performance || '80%', status, photo_url, id];
+    }
+
+    db.query(sql, params, (err) => {
+        if (err) {
+            console.error("SQL Error:", err);
+            return res.status(500).json({ error: err.sqlMessage });
+        }
+        res.json({ success: true });
     });
 });
 
-// 4. DELETE: Instructor remove karein
+// DELETE
 router.delete("/api/instructors/:id", (req, res) => {
-    const { id } = req.params;
-    const sql = "DELETE FROM instructors WHERE id = ?";
-    
-    db.query(sql, [id], (err, result) => {
+    db.query("DELETE FROM instructors WHERE id = ?", [req.params.id], (err) => {
         if (err) return res.status(500).json(err);
-        res.json({ success: true, message: "Instructor deleted!" });
+        res.json({ success: true });
     });
 });
 

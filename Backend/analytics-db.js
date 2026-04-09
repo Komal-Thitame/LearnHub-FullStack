@@ -88,5 +88,6 @@ router.post("/api/settings-update", (req, res) => {
     res.json({ message: "Settings updated successfully!" });
   });
 });
+
 module.exports = router;
 

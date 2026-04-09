@@ -151,5 +151,20 @@ router.post("/api/enquiry/convert/:id", (req, res) => {
         });
     });
 });
+// 7. PATCH Status Only (Required for toggleStatus in Frontend)
+router.patch("/api/enquiry/status/:id", (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const sql = "UPDATE student_enquiries SET status = ? WHERE id = ?";
+    
+    db.query(sql, [status, id], (err, result) => {
+        if (err) {
+            console.error("Status Update Error:", err);
+            return res.status(500).json(err);
+        }
+        res.json({ success: true, message: "Status updated successfully" });
+    });
+});
 
 module.exports = router;
