@@ -268,4 +268,40 @@ router.put("/api/update-student-photo", upload.single("photo"), (req, res) => {
         res.json({ success: true, message: "Photo updated successfully!" });
     });
 });
+// --- Naya Route sirf Admin Reports ke liye ---
+router.get("/api/admin/reports/admissions", (req, res) => {
+  const { filter, course } = req.query;
+  
+  // Base SQL Query
+  let sql = "SELECT a.*, c.title AS courseName FROM admissions a LEFT JOIN `view-courses` c ON a.course = c.Id WHERE 1=1";
+  const params = [];
+
+  // Filter Logic (Sirf Reports ke liye)
+  if (filter === "weekly") {
+    sql += " AND a.date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+  } else if (filter === "monthly") {
+    sql += " AND a.date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+  }
+
+  if (course && course !== "all") {
+    sql += " AND c.title = ?";
+    params.push(course);
+  }
+
+  sql += " ORDER BY a.id DESC";
+
+  db.query(sql, params, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    
+    const formattedData = result.map(row => {
+      if (row.photo) {
+        row.photo = `data:image/jpeg;base64,${row.photo.toString('base64')}`;
+      }
+      row.dob = formatDateSafe(row.dob);
+      row.date = formatDateSafe(row.date);
+      return row;
+    });
+    res.json(formattedData);
+  });
+});
 module.exports = router;

@@ -3,14 +3,27 @@ const router = express.Router();
 const db = require("./dbcon"); 
 
 // 1. GET: Saare payments fetch karna
+// 1. GET: Payments with Filtering (Frontend ke filters ke liye)
 router.get("/api/payments", (req, res) => {
+    const { filter } = req.query;
+    let dateCondition = "";
+
+    // Date filtering logic based on filter param
+    if (filter === "weekly") {
+        dateCondition = "AND p.payment_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+    } else if (filter === "monthly") {
+        dateCondition = "AND p.payment_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+    }
+
     const sql = `
         SELECT p.*, a.name AS student_name, c.title AS course_name, c.price AS course_price
         FROM payments p 
         JOIN admissions a ON p.student_id = a.id 
         JOIN \`view-courses\` c ON a.course = c.Id
+        WHERE 1=1 ${dateCondition}
         ORDER BY p.payment_date DESC
     `;
+    
     db.query(sql, (err, result) => {
         if (err) return res.status(500).send(err);
         res.json(result);
@@ -76,6 +89,27 @@ router.put("/api/payments/:id", (req, res) => {
     db.query(sql, [status, amount, method, req.params.id], (err, result) => {
         if (err) return res.status(500).send(err);
         res.json({ message: "Updated successfully" });
+    });
+});
+
+// Pending Payments Fetch Karne ke liye
+router.get("/api/payments/pending-summary", (req, res) => {
+    const sql = `
+        SELECT 
+            a.name AS student_name, 
+            c.title AS course_name, 
+            c.price AS total_fee,
+            IFNULL(SUM(p.amount), 0) AS paid_amount,
+            (c.price - IFNULL(SUM(p.amount), 0)) AS pending_amount
+        FROM admissions a
+        JOIN \`view-courses\` c ON a.course = c.Id
+        LEFT JOIN payments p ON a.id = p.student_id
+        GROUP BY a.id
+        HAVING pending_amount > 0
+    `;
+    db.query(sql, (err, result) => {
+        if (err) return res.status(500).json(err);
+        res.json(result);
     });
 });
 

@@ -59,7 +59,26 @@ router.put("/update-course/:id", upload.single('courseImage'), (req, res) => {
         res.send("Updated");
     });
 });
+// 5. Delete Course
+router.delete("/delete-course/:id", (req, res) => {
+    const courseId = req.params.id;
 
+    // IMPORTANT: Table name exactly wahi rakhein jo baki routes mein hai
+    const sql = "DELETE FROM `view-courses` WHERE Id = ?";
+
+    db.query(sql, [courseId], (err, result) => {
+        if (err) {
+            console.error("Database Error:", err);
+            return res.status(500).json({ error: "Database error occurred", details: err });
+        }
+        
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        res.json({ message: "Course deleted successfully" });
+    });
+});
 // 4. GET Enrolled Courses with Syllabus (JOIN is CRITICAL here)
 router.get("/api/enrolled-courses", (req, res) => {
     const email = req.query.email;
