@@ -23,9 +23,8 @@ const viewcoursesRoutes = require("./view-courses-db");
 const analyticsRoutes = require("./analytics-db");
 const dashboardDB = require("./dashboard-db");
 const notificationRoutes = require("./notification-db");
-const settingRoutes = require("./settings-db.js");
 const authRoutes = require("./auth-db");
-
+const receiptRouter = require("./receipt-db"); // File path sahi check karein
 // Use Routes
 app.use("/", admissionRoutes); 
 app.use("/", enquiryRoutes);
@@ -35,10 +34,10 @@ app.use("/", viewcoursesRoutes);
 app.use("/", analyticsRoutes);
 app.use("/", dashboardDB);
 app.use("/", notificationRoutes);
-app.use("/", settingRoutes);
 app.use("/", authRoutes);
-
-// Server Start
+app.use("/api/payments", receiptRouter);// Server Start
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Master Server running on http://localhost:${PORT}`);
