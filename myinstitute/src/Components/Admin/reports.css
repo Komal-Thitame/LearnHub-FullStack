@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.edu-reports-container {
+  padding: 30px;
+  background: #f4f7fe;
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Header Section - Fixed Overlap Issue */
+.edu-reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  flex-wrap: wrap; /* Taaki screen choti hone par filters niche shift ho jayein */
+  gap: 20px;
+}
+
+.edu-title-group h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1b2559;
+  margin: 0;
+}
+
+/* 2. Filter Group Styling */
+.edu-action-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.edu-select-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #1b2559;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.edu-btn-export {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+}
+
+.excel { background: #05cd99; }
+.pdf { background: #ee5d50; }
+
+/* 3. Stats Cards - Proper Alignment */
+.edu-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.edu-card-static {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 14px 17px 40px 4px rgba(112, 144, 176, 0.08);
+  border-bottom: 4px solid transparent;
+}
+
+.revenue { border-bottom-color: #4318ff; }
+.pending { border-bottom-color: #ffb547; }
+.total { border-bottom-color: #05cd99; }
+
+/* 4. Tab Switcher - Premium Look */
+.edu-view-switcher {
+  background: #e9edf7;
+  padding: 6px;
+  border-radius: 14px;
+  display: inline-flex;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.edu-tab-btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: #a3aed0;
+  background: transparent;
+}
+
+.active-paid {
+  background: #ffffff;
+  color: #4318ff !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.active-pending {
+  background: #ffffff;
+  color: #ee5d50 !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 5. TABLE FIX - Space Issues Resolved */
+.edu-table-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 14px 17px 40px 4px rgba(112, 144, 176, 0.08);
+  width: 100%;
+  overflow: hidden;
+}
+
+.edu-main-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.edu-main-table th {
+  text-align: left;
+  padding: 20px 25px;
+  background: #fcfdfe;
+  color: #a3aed0;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-bottom: 1px solid #f1f4f9;
+}
+
+.edu-main-table td {
+  padding: 20px 25px;
+  border-bottom: 1px solid #f1f4f9;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1b2559;
+}
+
+/* WhatsApp Remind Button */
+.edu-wa-btn {
+  background: #05cd99;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edu-wa-btn:hover { background: #04b386; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .edu-stats-grid { grid-template-columns: 1fr; }
+  .edu-reports-header { flex-direction: column; align-items: flex-start; }
+}
+/* --- Header Layout Fix --- */
+.edu-reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertical alignment center */
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+/* --- Filter & Button Wrapper --- */
+.edu-filter-section {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Elements ke beech ka gap */
+  flex-wrap: nowrap; /* Forces everything in one line */
+}
+
+/* --- Time Range Pill Style --- */
+.edu-filter-pill {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  gap: 8px;
+}
+
+.edu-filter-pill select {
+  border: none;
+  font-weight: 700;
+  outline: none;
+  color: #1b2559;
+  cursor: pointer;
+}
+
+/* --- Select Box Styling --- */
+.edu-select-box {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  font-weight: 700;
+  color: #1b2559;
+  min-width: 150px;
+  outline: none;
+}
+
+/* --- Export Buttons Group --- */
+.edu-export-group {
+  display: flex;
+  gap: 8px; /* Excel aur PDF ke beech ka gap */
+}
+
+.edu-btn-export {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap; /* Text ko wrap hone se rokta hai */
+  transition: 0.3s;
+}
+
+.excel { background: #05cd99; color: white; }
+.pdf { background: #ee5d50; color: white; }
+
+.edu-btn-export:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}

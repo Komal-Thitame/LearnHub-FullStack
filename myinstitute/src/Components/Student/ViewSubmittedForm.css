@@ -1,0 +1,243 @@
+/* Unique Variables to avoid global conflicts */
+:root {
+    --vfs-primary: #4318FF;
+    --vfs-navy: #1b2559;
+    --vfs-muted: #a3aed0;
+    --vfs-bg: #f4f7fe;
+    --vfs-success: #05cd99;
+    --vfs-border: #e0e5f2;
+}
+
+.vfs-container {
+    padding: 30px;
+    background-color: var(--vfs-bg);
+    min-height: 100vh;
+}
+
+/* Action Bar Styling */
+.vfs-action-bar {
+    max-width: 850px;
+    margin: 0 auto 25px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vfs-action-bar h2 {
+    color: var(--vfs-navy);
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.vfs-btn-print {
+    background: var(--vfs-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0px 4px 12px rgba(67, 24, 255, 0.3);
+}
+
+.vfs-btn-print:hover {
+    background: #3311cc;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 16px rgba(67, 24, 255, 0.4);
+}
+
+.vfs-btn-back {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Receipt Card Styling */
+.vfs-receipt-card {
+    background: #ffffff;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--vfs-border);
+}
+
+.vfs-receipt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--vfs-bg);
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+}
+
+.vfs-brand-info h1 {
+    font-size: 30px;
+    color: var(--vfs-navy);
+    margin: 0;
+    letter-spacing: -1px;
+    font-weight: 800;
+}
+
+.vfs-status-tag {
+    background: #e6fffa;
+    color: var(--vfs-success);
+    padding: 8px 18px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.vfs-block-title {
+    color: var(--vfs-primary);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.vfs-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.vfs-detail-item label {
+    display: block;
+    color: var(--vfs-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.vfs-detail-item span {
+    display: block;
+    color: var(--vfs-navy);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.vfs-detail-item.vfs-full {
+    grid-column: span 2;
+}
+
+.vfs-highlight-text {
+    color: var(--vfs-primary) !important;
+    font-size: 18px !important;
+}
+
+.vfs-divider {
+    border: 0;
+    border-top: 2px dashed var(--vfs-border);
+    margin: 40px 0;
+}
+
+.vfs-receipt-footer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.vfs-signature-box {
+    text-align: center;
+}
+
+.vfs-sig-line {
+    border-top: 2px solid var(--vfs-navy);
+    width: 200px;
+    margin-bottom: 8px;
+}
+
+/* List View Table Styling */
+.vfs-list-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.vfs-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.vfs-table th {
+    text-align: left;
+    padding: 15px;
+    background: #f8f9fa;
+    color: #444;
+    border-bottom: 2px solid #eee;
+}
+
+.vfs-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.vfs-course-cell {
+    font-weight: 600;
+    color: #4e44e7;
+    text-transform: capitalize;
+}
+
+.vfs-status-pill {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.vfs-status-pill.active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.vfs-view-btn {
+    background: #4e44e7;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.vfs-view-btn:hover {
+    background: #3931b8;
+}
+
+/* Critical Print Optimization */
+@media print {
+    .vfs-no-print {
+        display: none !important;
+    }
+    .vfs-container {
+        padding: 0;
+        background: white;
+    }
+    .vfs-receipt-card {
+        box-shadow: none;
+        border: 1px solid #eee;
+        padding: 30px;
+        width: 100%;
+        margin: 0;
+    }
+}

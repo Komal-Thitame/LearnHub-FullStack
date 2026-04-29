@@ -1,0 +1,100 @@
+.admin-layout-container {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Sidebar: Fixed width */
+.admin-layout-container .sidebar {
+  width: 260px;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1500; /* Sidebar ko Overlay se upar rakha hai */
+  background: #1e1e2d;
+  transition: transform 0.3s ease; /* Smooth toggle ke liye */
+}
+
+/* --- ADDED: Mobile toggle class --- */
+.admin-layout-container .sidebar.active {
+  transform: translateX(0) !important; /* Mobile par click karne par dikhega */
+}
+
+/* Main Wrapper */
+.admin-main-wrapper {
+  margin-left: 260px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f5f7fb;
+  width: calc(100% - 260px);
+}
+
+/* Header Fix */
+.admin-main-wrapper header {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: calc(100% - 260px);
+  height: 80px;
+  background: white;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+/* Content Area */
+.admin-page-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 80px;
+}
+
+/* --- ADDED: Overlay Styling --- */
+.overlay {
+  display: none; /* Desktop par band rahega */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); /* Piche ka area dark karne ke liye */
+  z-index: 1200; /* Sidebar se niche, content se upar */
+  backdrop-filter: blur(4px);
+}
+
+.overlay.active {
+  display: block; /* Mobile par toggle hone par dikhega */
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (Mobile & Tablet)
+============================================ */
+@media (max-width: 992px) {
+  .admin-layout-container .sidebar {
+    transform: translateX(-100%); /* Default hidden on mobile */
+  }
+
+  .admin-main-wrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .admin-main-wrapper header {
+    left: 0;
+    width: 100%;
+  }
+
+  /* Mobile close button visible karne ke liye agar zaroorat ho */
+  .sidebar .close-btn {
+    display: block !important;
+  }
+}

@@ -1,0 +1,128 @@
+.logout-wrapper {
+    height: 100%;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    padding: 20px;
+}
+
+.logout-box {
+    background: #ffffff;
+    padding: 50px 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.logout-icon-container {
+    width: 70px;
+    height: 70px;
+    background: #fff1f2;
+    color: #f43f5e;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    margin: 0 auto 25px;
+}
+
+.logout-box h2 {
+    color: #1e293b;
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.logout-box p {
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.logout-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-confirm {
+    background: #f43f5e;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-confirm:hover {
+    background: #e11d48;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(244, 63, 94, 0.2);
+}
+
+.btn-cancel {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #e2e8f0;
+}
+
+/* Progress Bar for "Signing Out" state */
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    width: 40%;
+    height: 100%;
+    background: #f43f5e;
+    position: absolute;
+    left: -40%;
+    animation: loadingSlide 1.2s infinite ease-in-out;
+}
+
+@keyframes loadingSlide {
+    0% { left: -40%; }
+    100% { left: 100%; }
+}
+
+.icon-spin {
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Animation when entering the page */
+.logout-box {
+    animation: fadeInScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

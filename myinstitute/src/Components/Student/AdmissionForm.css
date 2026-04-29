@@ -1,0 +1,130 @@
+/* Body par filter/gradient add kiya hai taaki Back Button aur Cards standout karein */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+.lms-page-wrapper {
+    display: flex;
+    min-height: 85vh;
+    margin: 30px auto;
+    max-width: 1200px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* Sidebar */
+.lms-sidebar { flex: 0.28; background: #1a1c2e; padding: 40px; color: white; display: flex; flex-direction: column; }
+.lms-brand-box { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+.lms-logo-sq { background: #6366f1; width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.lms-brand-name { display: block; font-weight: 700; font-size: 1.2rem; }
+.lms-brand-tag { font-size: 0.7rem; color: #94a3b8; }
+
+.lms-profile-card { text-align: center; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 40px; }
+.lms-avatar-box { width: 90px; height: 90px; margin: 0 auto 10px; position: relative; }
+.lms-avatar-box img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #6366f1; }
+.lms-cam-btn { position: absolute; bottom: 0; right: 0; background: #6366f1; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+
+.lms-step { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; opacity: 0.4; }
+.lms-step.active { opacity: 1; color: #6366f1; }
+.lms-step-dot { width: 25px; height: 25px; border: 1px solid currentColor; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+
+/* Main Content */
+.lms-content { flex: 0.72; padding: 50px; background: #fcfdfe; }
+.lms-title { font-size: 1.5rem; color: #1e293b; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+.lms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.lms-group.full { grid-column: span 2; }
+.lms-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b; }
+.lms-group input, .lms-select, .lms-textarea { width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 10px; }
+
+/* Course Cards */
+.lms-course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.lms-course-card { background: #fff; border: 1.5px solid #e2e8f0; padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s; position: relative; }
+.lms-course-card:hover { border-color: #6366f1; transform: translateY(-3px); }
+.lms-course-card.selected { border-color: #6366f1; background: #f5f3ff; }
+.lms-card-head { display: flex; justify-content: space-between; color: #94a3b8; margin-bottom: 10px; }
+.lms-level-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; background: #e0e7ff; color: #6366f1; padding: 2px 8px; border-radius: 20px; }
+.lms-card-meta { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin: 10px 0; }
+.lms-rating { color: #b4690e; font-weight: 700; }
+.lms-price-row { display: flex; justify-content: space-between; align-items: center; }
+.lms-check-tick { color: #6366f1; font-size: 1.2rem; }
+
+/* Doc Stack */
+.lms-doc-stack { display: flex; flex-direction: column; gap: 10px; }
+.lms-doc-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border: 1.5px solid #e2e8f0; border-radius: 12px; }
+.lms-doc-icon { font-size: 1.5rem; color: #6366f1; }
+.lms-upload-trigger { margin-left: auto; color: #94a3b8; cursor: pointer; font-size: 1.2rem; }
+
+.lms-summary-box { margin-top: 30px; padding: 20px; background: #1e1c2e; color: white; border-radius: 12px; text-align: center; }
+
+/* Footer */
+.lms-footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; }
+.lms-next-btn, .lms-submit-btn { background: #6366f1; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+/* Updated Back Button Styling for better visibility */
+.lms-prev-btn { 
+    background: white; 
+    border: 2px solid #cbd5e1; /* Thoda dark border */
+    color: #475569; /* Slate color text */
+    padding: 12px 25px; 
+    border-radius: 8px; 
+    font-weight: 700;
+    cursor: pointer; 
+    transition: all 0.2s ease;
+}
+
+.lms-prev-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
+}
+
+/* Success Overlay */
+.lms-success-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.lms-success-card { background: white; padding: 40px; border-radius: 20px; text-align: center; }
+.lms-success-icon { font-size: 4rem; color: #10b981; margin-bottom: 15px; }
+.lms-btn-finish { background: #6366f1; color: white; border: none; padding: 12px 30px; border-radius: 8px; margin-top: 20px; cursor: pointer; }
+
+.lms-fade { animation: lms-in 0.4s ease-out; }
+/* Gender Dropdown & Form Inputs Premium Styling */
+.lms-select {
+    appearance: none; /* Removes default browser styling */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.lms-group input:focus, 
+.lms-select:focus, 
+.lms-textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Specific styling for the gender option container to match your existing grid */
+.lms-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.lms-group select option {
+    color: #1e293b;
+    padding: 10px;
+}
+@keyframes lms-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }

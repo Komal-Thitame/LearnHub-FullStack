@@ -1,0 +1,144 @@
+/* Student Payment/Receipts Page Styles */
+.student-payment-page {
+    padding: 25px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Header Section */
+.spp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.spp-title-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.spp-icon-circle {
+    width: 50px;
+    height: 50px;
+    background: #eef2ff;
+    color: #6366f1;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.spp-title-box h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.spp-title-box p {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* Table Styling */
+.spp-table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.spp-table th {
+    background: #f1f5f9;
+    color: #475569;
+    text-align: left;
+    padding: 15px 20px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.spp-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.spp-id-txt {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: #6366f1;
+}
+
+.spp-name-txt {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.spp-amt-txt {
+    font-weight: 700;
+    color: #10b981;
+}
+
+/* Action Button */
+.btn-act.view {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-act.view:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Loader Styling */
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6366f1;
+    font-weight: 500;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .spp-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

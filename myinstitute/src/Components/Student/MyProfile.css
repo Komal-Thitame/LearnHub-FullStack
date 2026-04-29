@@ -1,0 +1,109 @@
+.profile-page-container {
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header Section */
+.profile-header-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.profile-cover {
+    height: 120px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+}
+
+.profile-info-main {
+    padding: 0 40px 30px;
+    display: flex;
+    align-items: flex-end;
+    gap: 25px;
+    margin-top: -60px;
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    border: 5px solid white;
+    border-radius: 50%;
+}
+
+.profile-avatar-wrapper img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 5px; right: 5px;
+    background: #1e293b; color: white;
+    border: none; width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer;
+}
+
+.profile-names h1 { font-size: 1.8rem; color: #1e293b; margin-bottom: 5px; }
+
+.badge-verified {
+    background: #e0e7ff; color: #4338ca;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 700;
+}
+
+.btn-edit-profile {
+    margin-left: auto;
+    background: #f1f5f9; color: #475569;
+    border: none; padding: 10px 20px;
+    border-radius: 10px; font-weight: 600; cursor: pointer;
+}
+
+/* Grid Layout */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.profile-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.profile-card h3 { color: #1e293b; margin-bottom: 25px; font-size: 1.2rem; }
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-icon {
+    margin-top: 5px;
+    color: #6366f1;
+    font-size: 1.1rem;
+    width: 20px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.info-item p { color: #334155; font-weight: 600; margin: 0; }

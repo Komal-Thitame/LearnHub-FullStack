@@ -1,0 +1,96 @@
+.fin-main-container {
+    padding: 35px;
+    background-color: #fcfcfd;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.fin-grid-wrapper {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Wallet Card */
+.fin-wallet-card {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    border-radius: 24px;
+    padding: 30px;
+    color: white;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 40px rgba(30, 27, 75, 0.25);
+    margin-bottom: 30px;
+}
+.fin-card-upper { display: flex; justify-content: space-between; align-items: center; }
+.fin-chip { width: 45px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 6px; }
+.fin-card-logo { font-size: 24px; opacity: 0.6; }
+.fin-balance-info p { font-size: 13px; opacity: 0.7; margin: 0; }
+.fin-balance-info h2 { font-size: 32px; font-weight: 800; margin: 5px 0; letter-spacing: -1px; }
+.fin-card-holder { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; letter-spacing: 1px; opacity: 0.8; }
+
+/* Breakdown Card */
+.fin-breakdown-card {
+    background: white;
+    padding: 25px;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+}
+.fin-breakdown-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+.fin-pie-box { position: relative; display: flex; justify-content: center; }
+.fin-pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.fin-pie-center strong { display: block; font-size: 24px; font-weight: 800; color: #1e293b; }
+.fin-pie-center span { font-size: 12px; color: #94a3b8; }
+
+.fin-legend { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.fin-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.fin-dot { width: 8px; height: 8px; border-radius: 50%; }
+.fin-legend-item p { margin: 0; flex: 1; color: #64748b; font-weight: 600; }
+
+/* Right Panel Payout */
+.fin-payout-box {
+    background: #6366f1;
+    padding: 30px;
+    border-radius: 24px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.fin-p-info h4 { margin: 0; font-size: 20px; font-weight: 800; }
+.fin-p-info p { margin: 5px 0 0; opacity: 0.8; font-size: 14px; }
+.fin-withdraw-btn { 
+    background: white; color: #6366f1; border: none; padding: 12px 24px; 
+    border-radius: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 10px;
+}
+
+/* History List */
+.fin-history-section { background: white; padding: 30px; border-radius: 24px; border: 1px solid #f1f5f9; }
+.fin-section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.fin-section-head h3 { font-size: 20px; font-weight: 800; margin: 0; }
+.fin-filter-btn { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 15px; border-radius: 10px; font-weight: 700; color: #64748b; font-size: 13px; }
+
+.fin-trx-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.fin-trx-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+.fin-trx-card:hover { border-color: #6366f1; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+.fin-trx-icon { font-size: 20px; color: #10b981; }
+.fin-trx-details { flex: 1; }
+.fin-trx-details strong { display: block; font-size: 15px; color: #1e293b; }
+.fin-trx-details p { margin: 2px 0 0; font-size: 12px; color: #94a3b8; font-weight: 600; }
+.fin-trx-meta { text-align: right; }
+.fin-price-tag { display: block; font-weight: 800; color: #1e293b; font-size: 16px; }
+.fin-time-tag { font-size: 11px; color: #94a3b8; font-weight: 700; }
